@@ -5,8 +5,7 @@
             [clj-http.core :as core]
             [clj-http.util :as util]
             [ring.adapter.jetty :as ring])
-  (:import (java.io ByteArrayInputStream)
-           (org.apache.http.message BasicHeader BasicHeaderIterator)))
+  (:import (java.io ByteArrayInputStream)))
 
 (defn handler [req]
   ;;(pp/pprint req)
@@ -36,7 +35,10 @@
 (defn run-server
   []
   (defonce server
-    (future (ring/run-jetty handler {:port 18080}))))
+    (do
+      (future
+        (ring/run-jetty handler {:port 18080}))
+      (Thread/sleep 1000))))
 
 (def base-req
   {:scheme :http
@@ -102,13 +104,15 @@
     (request {:request-method :get :uri "/timeout" :socket-timeout 1})
     (throw (Exception. "Shouldn't get here."))
     (catch Exception e
-      (is (= java.net.SocketTimeoutException (class e))))))
+      (is (or (= java.net.SocketTimeoutException (class e))
+              (= java.net.SocketTimeoutException (class (.getCause e))))))))
 
-(deftest ^{:integration true} delete-with-body
-  (run-server)
-  (let [resp (request {:request-method :delete :uri "/delete-with-body"
-                       :body (.getBytes "foo bar")})]
-    (is (= 200 (:status resp)))))
+;; HUC can't do this
+;; (deftest ^{:integration true} delete-with-body
+;;   (run-server)
+;;   (let [resp (request {:request-method :delete :uri "/delete-with-body"
+;;                        :body (.getBytes "foo bar")})]
+;;     (is (= 200 (:status resp)))))
 
 (deftest ^{:integration true} self-signed-ssl-get
   (let [t (doto (Thread. #(ring/run-jetty handler
@@ -116,32 +120,32 @@
                                            :keystore "test-resources/keystore"
                                            :key-password "keykey"})) .start)]
     (try
-      (is (thrown? javax.net.ssl.SSLPeerUnverifiedException
+      (is (thrown? javax.net.ssl.SSLException
                    (request {:request-method :get :uri "/get"
                              :server-port 18082 :scheme :https})))
-      (let [resp (request {:request-method :get :uri "/get" :server-port 18082
+      #_(let [resp (request {:request-method :get :uri "/get" :server-port 18082
                            :scheme :https :insecure? true})]
         (is (= 200 (:status resp)))
         (is (= "get" (slurp-body resp))))
       (finally
        (.stop t)))))
 
-(deftest ^{:integration true} multipart-form-uploads
-  (run-server)
-  (let [bytes (util/utf8-bytes "byte-test")
-        stream (ByteArrayInputStream. bytes)
-        resp (request {:request-method :post :uri "/multipart"
-                       :multipart [["a" "testFINDMEtest"]
-                                   ["b" bytes]
-                                   ["c" stream]
-                                   ["d" (file "test-resources/keystore")]]})
-        resp-body (apply str (map #(try (char %) (catch Exception _ ""))
-                                  (:body resp)))]
-    (is (= 200 (:status resp)))
-    (is (re-find #"testFINDMEtest" resp-body))
-    (is (re-find #"byte-test" resp-body))
-    (is (re-find #"name=\"c\"" resp-body))
-    (is (re-find #"name=\"d\"" resp-body))))
+;; (deftest ^{:integration true} multipart-form-uploads
+;;   (run-server)
+;;   (let [bytes (util/utf8-bytes "byte-test")
+;;         stream (ByteArrayInputStream. bytes)
+;;         resp (request {:request-method :post :uri "/multipart"
+;;                        :multipart [["a" "testFINDMEtest"]
+;;                                    ["b" bytes]
+;;                                    ["c" stream]
+;;                                    ["d" (file "test-resources/keystore")]]})
+;;         resp-body (apply str (map #(try (char %) (catch Exception _ ""))
+;;                                   (:body resp)))]
+;;     (is (= 200 (:status resp)))
+;;     (is (re-find #"testFINDMEtest" resp-body))
+;;     (is (re-find #"byte-test" resp-body))
+;;     (is (re-find #"name=\"c\"" resp-body))
+;;     (is (re-find #"name=\"d\"" resp-body))))
 
 (deftest ^{:integration true} t-save-request-obj
   (run-server)
@@ -152,30 +156,37 @@
     (is (= {:scheme :http
             :http-url "http://localhost:18080/post"
             :request-method :post
-            :save-request? true
             :uri "/post"
             :server-name "localhost"
             :server-port 18080}
            (dissoc (:request resp) :body)))))
 
-(deftest parse-headers
-  (are [headers expected]
-       (let [iterator (BasicHeaderIterator.
-                       (into-array BasicHeader
-                                   (map (fn [[name value]]
-                                          (BasicHeader. name value))
-                                        headers)) nil)]
-         (is (= (core/parse-headers iterator) expected)))
+;; (deftest parse-headers
+;;   (are [headers expected]
+;;        (let [iterator (BasicHeaderIterator.
+;;                        (into-array BasicHeader
+;;                                    (map (fn [[name value]]
+;;                                           (BasicHeader. name value))
+;;                                         headers))
+;;                        nil)]
+;;          (is (= (core/parse-headers iterator)
+;;                 expected)))
 
-       [] {}
+;;        []
+;;        {}
 
-       [["Set-Cookie" "one"]] {"set-cookie" "one"}
+;;        [["Set-Cookie" "one"]]
+;;        {"set-cookie" "one"}
 
-       [["Set-Cookie" "one"] ["set-COOKIE" "two"]]
-       {"set-cookie" ["one" "two"]}
+;;        [["Set-Cookie" "one"]
+;;         ["set-COOKIE" "two"]]
+;;        {"set-cookie" ["one" "two"]}
 
-       [["Set-Cookie" "one"] ["serVer" "some-server"] ["set-cookie" "two"]]
-       {"set-cookie" ["one" "two"] "server" "some-server"}))
+;;        [["Set-Cookie" "one"]
+;;         ["serVer"     "some-server"]
+;;         ["set-cookie" "two"]]
+;;        {"set-cookie" ["one" "two"]
+;;         "server"     "some-server"}))
 
 (deftest ^{:integration true} t-streaming-response
   (run-server)

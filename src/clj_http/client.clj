@@ -1,15 +1,12 @@
 (ns clj-http.client
   "Batteries-included HTTP client."
-  (:use [clj-http.cookies :only (wrap-cookies)]
-        [slingshot.slingshot :only [throw+]])
+  (:use [slingshot.slingshot :only [throw+]])
   (:require [clojure.string :as str]
             [cheshire.core :as json]
             [clj-http.core :as core]
             [clj-http.util :as util])
   (:import (java.io InputStream File)
-           (java.net URL UnknownHostException)
-           (org.apache.http.entity ByteArrayEntity InputStreamEntity
-                                   FileEntity StringEntity))
+           (java.net URL UnknownHostException))
   (:refer-clojure :exclude (get)))
 
 (defn update [m k f & args]
@@ -120,23 +117,9 @@
     (if body
       (cond
        (string? body)
-       (client (-> req (assoc :body (StringEntity. body (or body-encoding
-                                                            "UTF-8"))
+       (client (-> req (assoc :body (.getBytes body)
                               :character-encoding (or body-encoding
                                                       "UTF-8"))))
-       (instance? File body)
-       (client (-> req (assoc :body (FileEntity. body (or body-encoding
-                                                          "UTF-8")))))
-       (instance? InputStream body)
-       (do
-         (when-not (and length (pos? length))
-           (throw
-            (Exception. ":length key is required for InputStream bodies")))
-         (client (-> req (assoc :body (InputStreamEntity. body length)))))
-
-       (instance? (Class/forName "[B") body)
-       (client (-> req (assoc :body (ByteArrayEntity. body))))
-
        :else
        (client req))
       (client req))))
@@ -268,7 +251,6 @@
       wrap-content-type
       wrap-form-params
       wrap-method
-      wrap-cookies
       wrap-unknown-host))
 
 (def #^{:doc
