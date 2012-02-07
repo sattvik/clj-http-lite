@@ -9,7 +9,12 @@ TODO
 
 ## Differences from clj-http
 
-TODO
+- Instead of Apache HTTP client, clj-http-lite uses HttpURLConnection
+- No automatic JSON decoding for response bodies
+- No cookie support
+- No proxy-ing DELETEs with body
+- No multipart form uploads
+- No persistent connection support
 
 ## Usage
 
@@ -178,25 +183,6 @@ options:
 ```clojure
 (client/get "http://foo.com" {:proxy-host "127.0.0.1" :proxy-port 8118})
 ```
-
-### Using persistent connections
-clj-http can use persistent connections to speed up connections if
-multiple connections are being used:
-
-```clojure
-(with-connection-pool {:timeout 5 :threads 4 :insecure? false}
-  (get "http://aoeu.com/1")
-  (post "http://aoeu.com/2")
-  (get "http://aoeu.com/3")
-  ...
-  (get "http://aoeu.com/999"))
-```
-
-This is MUCH faster than sequentially performing all requests, because
-a persistent connection can be used instead creating a new connection
-for each request.
-
-This feature is fairly new, please let me know if you have any feedback!
 
 ## Faking clj-http responses
 
