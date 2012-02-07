@@ -2,7 +2,6 @@
   "Batteries-included HTTP client."
   (:use [slingshot.slingshot :only [throw+]])
   (:require [clojure.string :as str]
-            [cheshire.core :as json]
             [clj-http.core :as core]
             [clj-http.util :as util])
   (:import (java.io InputStream File)
@@ -75,14 +74,7 @@
          (condp = as
            ;; Don't do anything when it's a byte-array
            :byte-array resp
-           ;; Convert to json from UTF-8 string
-           :json
-           (assoc resp :body (json/decode (String. #^"[B" body "UTF-8") true))
-           ;; Convert to json with strings as keys
-           :json-string-keys
-           (assoc resp :body (json/decode (String. #^"[B" body "UTF-8")))
-           ;; Attempt to automatically coerce the body, returning a
-           ;; string if no coercions are found
+           ;; Automatically determine response type
            :auto
            (assoc resp
              :body
@@ -93,12 +85,6 @@
                                                   (str typestring)))]
                   (String. #^"[B" body ^String charset)
                   (String. #^"[B" body "UTF-8"))
-
-                (.startsWith (str typestring) "application/json")
-                (if-let [charset (second (re-find #"charset=(.*)"
-                                                  (str typestring)))]
-                  (json/decode (String. #^"[B" body ^String charset) true)
-                  (json/decode (String. #^"[B" body "UTF-8") true))
 
                 :else
                 (String. #^"[B" body "UTF-8"))))
