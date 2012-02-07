@@ -5,7 +5,12 @@ A Clojure HTTP library similar to
 
 ## Installation
 
-TODO
+`clj-http-lite` is available as a Maven artifact
+from[Clojars](http://clojars.org/clj-http-lite):
+
+```clojure
+[clj-http-lite "0.1.0"]
+```
 
 ## Differences from clj-http
 
