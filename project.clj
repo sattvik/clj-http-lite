@@ -1,6 +1,6 @@
-(defproject clj-http-jdk "0.3.2-SNAPSHOT"
-  :description "A Clojure HTTP library wrapping the Apache HttpComponents client."
-  :url "https://github.com/dakrone/clj-http/"
+(defproject clj-http-lite "0.1.0"
+  :description "A Clojure HTTP library similar to clj-http, but more lightweight."
+  :url "https://github.com/hiredman/clj-http-lite/"
   :repositories {"sona" "http://oss.sonatype.org/content/repositories/snapshots"}
   :warn-on-reflection false
   :dependencies [[org.clojure/clojure "1.3.0"]
