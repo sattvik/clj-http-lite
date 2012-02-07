@@ -1,29 +1,15 @@
-# `clj-http`
+# `clj-http-lite`
 
-A Clojure HTTP library wrapping the [Apache
-HttpComponents](http://hc.apache.org/) client.
-
-This library has taken over from mmcgrana's clj-http. Please send a
-pull request or open an issue if you have any problems
-
-[![Continuous Integration status](https://secure.travis-ci.org/dakrone/clj-http.png)](http://travis-ci.org/dakrone/clj-http)
+A Clojure HTTP library similar to
+[clj-http](http://github.com/dakrone/clj-http), but more lightweight.
 
 ## Installation
 
-`clj-http` is available as a Maven artifact from
-[Clojars](http://clojars.org/clj-http):
+TODO
 
-```clojure
-[clj-http "0.3.1"]
-```
+## Differences from clj-http
 
-Previous versions available as
-
-```clojure
-[clj-http "0.3.0"]
-[clj-http "0.2.7"]
-[clj-http "0.2.6"]
-```
+TODO
 
 ## Usage
 
@@ -132,13 +118,9 @@ The client transparently accepts and decompresses the `gzip` and
 ;; Coerce as something other than UTF-8 string
 (client/get "http://site.com/string.txt" {:as "UTF-16"})
 
-;; Coerce as json
-(client/get "http://site.com/foo.json" {:as :json})
-(client/get "http://site.com/foo.json" {:as :json-string-keys})
-
 ;; Try to automatically coerce the output based on the content-type
 ;; header (this is currently a BETA feature!)
-(client/get "http://site.com/foo.json" {:as :auto})
+(client/get "http://site.com/foo.bar" {:as :auto})
 
 ;; Return the body as a stream
 (client/get "http://site.com/bigrequest.html" {:as :stream})
