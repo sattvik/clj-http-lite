@@ -20,6 +20,7 @@ from [Clojars](http://clojars.org/clj-http-lite):
 - No proxy-ing DELETEs with body
 - No multipart form uploads
 - No persistent connection support
+- No support for insecure HTTPS connection (yet)
 
 ## Usage
 
@@ -181,13 +182,7 @@ block:
 
 A proxy can be specified by setting the Java properties:
 `<scheme>.proxyHost` and `<scheme>.proxyPort` where `<scheme>` is the client
-scheme used (normally 'http' or 'https'). Additionally, per-request
-proxies can be specified with the `proxy-host` and `proxy-port`
-options:
-
-```clojure
-(client/get "http://foo.com" {:proxy-host "127.0.0.1" :proxy-port 8118})
-```
+scheme used (normally 'http' or 'https').
 
 ## Faking clj-http responses
 
