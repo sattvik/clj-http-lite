@@ -1,4 +1,4 @@
-(ns clj-http.core
+(ns clj-http.lite.core
   "Core HTTP request/response implementation."
   (:require [clojure.java.io :as io])
   (:import (java.io ByteArrayOutputStream IOException)

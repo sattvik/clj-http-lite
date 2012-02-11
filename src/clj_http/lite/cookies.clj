@@ -1,5 +1,5 @@
-(ns clj-http.cookies
-  (:use [clj-http.util :only [url-decode url-encode]]
+(ns clj-http.lite.cookies
+  (:use [clj-http.lite.util :only [url-decode url-encode]]
         [clojure.string :only [blank? join lower-case]])
   (:import (org.apache.http.client.params ClientPNames CookiePolicy)
            (org.apache.http.cookie ClientCookie CookieOrigin)

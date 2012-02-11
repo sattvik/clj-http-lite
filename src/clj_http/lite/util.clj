@@ -1,4 +1,4 @@
-(ns clj-http.util
+(ns clj-http.lite.util
   "Helper functions for the HTTP client."
   (:import (org.apache.commons.codec.binary Base64)
            (org.apache.commons.io IOUtils)

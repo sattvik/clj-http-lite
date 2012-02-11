@@ -1,5 +1,5 @@
 (ns clj-http.test.cookies
-  (:use [clj-http.util]
+  (:use [clj-http.lite.util]
         [clojure.test]))
 
 ;; (defn refer-private [ns]

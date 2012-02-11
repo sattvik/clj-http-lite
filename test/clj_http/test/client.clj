@@ -1,8 +1,8 @@
 (ns clj-http.test.client
   (:use [clojure.test]
         [clj-http.test.core :only [run-server]])
-  (:require [clj-http.client :as client]
-            [clj-http.util :as util])
+  (:require [clj-http.lite.client :as client]
+            [clj-http.lite.util :as util])
   (:import (java.net UnknownHostException)
            (java.util Arrays)))
 

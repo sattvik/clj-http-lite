@@ -2,8 +2,8 @@
   (:use [clojure.test]
         [clojure.java.io :only [file]])
   (:require [clojure.pprint :as pp]
-            [clj-http.core :as core]
-            [clj-http.util :as util]
+            [clj-http.lite.core :as core]
+            [clj-http.lite.util :as util]
             [ring.adapter.jetty :as ring])
   (:import (java.io ByteArrayInputStream)))
 
