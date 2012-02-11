@@ -21,14 +21,15 @@ from [Clojars](http://clojars.org/clj-http-lite):
 - No multipart form uploads
 - No persistent connection support
 - No support for insecure HTTPS connection (yet)
+- namespace rename clj-http.* -> clj-http.lite.*
 
 ## Usage
 
 The main HTTP client functionality is provided by the
-`clj-http.client` namespace:
+`clj-http.lite.client` namespace:
 
 ```clojure
-(require '[clj-http.client :as client])
+(require '[clj-http.lite.client :as client])
 ```
 
 The client supports simple `get`, `head`, `put`, `post`, and `delete`
@@ -168,7 +169,7 @@ block:
                                                           "transfer-encoding" "chunked",
                                                           "connection" "close"},
                                    :body "...body here..."}
-   clj-http.client/wrap-exceptions/fn--227 (client.clj:37)
+   clj-http.lite.client/wrap-exceptions/fn--227 (client.clj:37)
 
 ;; You can also ignore exceptions and handle them yourself:
 (client/get "http://site.com/broken" {:throw-exceptions false})
@@ -196,12 +197,12 @@ The design of `clj-http` is inspired by the
 [Ring](http://github.com/mmcgrana/ring) protocol for Clojure HTTP
 server applications.
 
-The client in `clj-http.core` makes HTTP requests according to a given
+The client in `clj-http.lite.core` makes HTTP requests according to a given
 Ring request map and returns Ring response maps corresponding to the
-resulting HTTP response. The function `clj-http.client/request` uses
+resulting HTTP response. The function `clj-http.lite.client/request` uses
 Ring-style middleware to layer functionality over the core HTTP
-request/response implementation. Methods like `clj-http.client/get`
-are sugar over this `clj-http.client/request` function.
+request/response implementation. Methods like `clj-http.lite.client/get`
+are sugar over this `clj-http.lite.client/request` function.
 
 ## Development
 
