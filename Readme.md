@@ -9,7 +9,7 @@ A Clojure HTTP library similar to
 from [Clojars](http://clojars.org/clj-http-lite):
 
 ```clojure
-[clj-http-lite "0.1.0"]
+[clj-http-lite "0.2.0"]
 ```
 
 ## Differences from clj-http
