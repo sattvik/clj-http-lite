@@ -24,7 +24,6 @@
     [[] (atom state)]))
 
 (defn -createSocket [this & args]
-  (prn @(.state this))
   (doto
     (apply (partial (memfn createSocket) (:factory @(.state this))) args)
     (.setEnabledCipherSuites (:enabled-ciphers @(.state this)))))
@@ -34,8 +33,3 @@
 
 (defn -getSupportedCipherSuites [this]
   (strip-dh-suites (.getSupportedCipherSuites (:factory @(.state this)))))
-
-(comment
-  (compile clj-http.lite.NoDHSocketFactory
-           )
-  )
