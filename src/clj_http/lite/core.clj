@@ -1,10 +1,10 @@
 (ns clj-http.lite.core
   "Core HTTP request/response implementation."
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [clj-http.lite.NoDHSocketFactory])
   (:import (java.io ByteArrayOutputStream InputStream IOException)
            (java.net URI URL HttpURLConnection)
-           (javax.net.ssl HttpsURLConnection)
-           (clj-http.lite NoDHSocketFactory)))
+           (javax.net.ssl HttpsURLConnection)))
 
 (defn parse-headers
   "Takes a URLConnection and returns a map of names to values.
@@ -47,7 +47,7 @@
     (if (instance? HttpsURLConnection conn)
       (doto conn
         (.setSSLSocketFactory
-          (NoDHSocketFactory.
+         (clj-http.lite.NoDHSocketFactory/no-dhs-socket-factory
             (.getSSLSocketFactory conn))))
       conn)))
 

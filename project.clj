@@ -19,5 +19,4 @@
                    :all (constantly true)}
   :aliases {"all" ["with-profile" "dev,1.2:dev,1.3:dev:1.5,dev"]}
   :checksum-deps true
-  :aot [clj-http.lite.NoDHSocketFactory]
   )
