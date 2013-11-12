@@ -31,7 +31,7 @@
               (.getInputStream ^HttpURLConnection conn)
               (catch Exception e
                 (.getErrorStream ^HttpURLConnection conn)))]
-    (if (= :stream as)
+    (if (or (= :stream as) (nil? ins))
       ins
       (with-open [ins ^InputStream ins
                   baos (ByteArrayOutputStream.)]
