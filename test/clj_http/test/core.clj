@@ -131,6 +131,7 @@
                                           {:port 8081 :ssl-port 18082 :ssl? true
                                            :keystore "test-resources/keystore"
                                            :key-password "keykey"})) .start)]
+    (Thread/sleep 1000)
     (try
       (is (thrown? javax.net.ssl.SSLException
                    (request {:request-method :get :uri "/get"
