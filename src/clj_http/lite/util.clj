@@ -49,7 +49,9 @@
   "Returns a gunzip'd version of the given byte array."
   [b]
   (when b
-    (to-byte-array (GZIPInputStream. (ByteArrayInputStream. b)))))
+    (if (instance? InputStream b)
+      (GZIPInputStream. b)
+      (to-byte-array (GZIPInputStream. (ByteArrayInputStream. b))))))
 
 (defn gzip
   "Returns a gzip'd version of the given byte array."

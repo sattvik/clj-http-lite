@@ -73,6 +73,8 @@
         (cond
          (keyword? as)
          (condp = as
+           ;; Don't do anything for streams
+           :stream resp
            ;; Don't do anything when it's a byte-array
            :byte-array resp
            ;; Automatically determine response type
