@@ -236,7 +236,8 @@
           resp (param-client {:request-method :post
                               :form-params {:param1 "value1"
                                             :param2 "value2"}})]
-      (is (= "param1=value1&param2=value2" (:body resp)))
+      (is (or (= "param1=value1&param2=value2" (:body resp))
+              (= "param2=value2&param1=value1" (:body resp))))
       (is (= "application/x-www-form-urlencoded" (:content-type resp)))
       (is (not (contains? resp :form-params)))))
   (testing "Ensure it does not affect GET requests"
