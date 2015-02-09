@@ -110,6 +110,15 @@
     (is (= 200 (:status resp)))
     (is (= "get" (slurp-body resp)))))
 
+(deftest ^{:integration true} sets-conn-timeout
+  ; indirect way of testing if a connection timeout will fail by passing in an
+  ; invalid argument
+  (try
+    (request {:request-method :get :uri "/timeout" :conn-timeout -1})
+    (throw (Exception. "Shouldn't get here."))
+    (catch Exception e
+      (is (= IllegalArgumentException (class e))))))
+
 (deftest ^{:integration true} sets-socket-timeout
   (run-server)
   (try

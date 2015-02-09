@@ -68,6 +68,8 @@
       (.setDoOutput conn true))
     (when socket-timeout
       (.setReadTimeout conn socket-timeout))
+    (when conn-timeout
+      (.setConnectTimeout conn conn-timeout))
     (.connect conn)
     (when body
       (with-open [out (.getOutputStream conn)]
