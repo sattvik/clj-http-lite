@@ -1,7 +1,6 @@
-(defproject clj-http-lite "0.2.2-SNAPSHOT"
+(defproject com.sattvik/clj-http-lite "0.2.3"
   :description "A Clojure HTTP library similar to clj-http, but more lightweight."
   :url "https://github.com/hiredman/clj-http-lite/"
-  :repositories {"sona" "http://oss.sonatype.org/content/repositories/snapshots"}
   :warn-on-reflection false
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [slingshot "0.12.1"]]
