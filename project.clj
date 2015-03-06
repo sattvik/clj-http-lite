@@ -1,4 +1,4 @@
-(defproject com.sattvik/clj-http-lite "0.2.4-SNAPSHOT"
+(defproject com.sattvik/clj-http-lite "0.2.4"
   :description "A Clojure HTTP library similar to clj-http, but more lightweight."
   :url "https://github.com/hiredman/clj-http-lite/"
   :warn-on-reflection false
