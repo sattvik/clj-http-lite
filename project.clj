@@ -9,7 +9,7 @@
                                   [ring/ring-devel "1.3.2"]]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.0"]]}
-             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha4"]]}}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha5"]]}}
   :test-selectors {:default  #(not (:integration %))
                    :integration :integration
                    :all (constantly true)}
