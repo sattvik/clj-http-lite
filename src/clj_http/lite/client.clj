@@ -7,7 +7,7 @@
             [clj-http.lite.util :as util])
   (:import (java.io InputStream File)
            (java.net URL UnknownHostException))
-  (:refer-clojure :exclude (get)))
+  (:refer-clojure :exclude (get update)))
 
 (defn update [m k f & args]
   (assoc m k (apply f (m k) args)))
