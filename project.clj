@@ -13,5 +13,5 @@
   :test-selectors {:default  #(not (:integration %))
                    :integration :integration
                    :all (constantly true)}
-  :aliases {"all" ["with-profile" "dev,1.3:dev,1.4:dev,1.5:dev:dev,1.7"]}
+  :aliases {"all" ["with-profile" "dev,1.4:dev,1.5:dev:dev,1.7"]}
   :checksum-deps true)
